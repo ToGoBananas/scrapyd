@@ -1,13 +1,13 @@
 import os
 
 from twisted.trial import unittest
-
 from zope.interface.verify import verifyObject
 
-from scrapyd.interfaces import ISpiderScheduler
 from scrapyd.config import Config
+from scrapyd.interfaces import ISpiderScheduler
 from scrapyd.scheduler import SpiderScheduler
 from scrapyd.utils import get_spider_queues
+
 
 class SpiderSchedulerTest(unittest.TestCase):
 
@@ -42,4 +42,3 @@ class SpiderSchedulerTest(unittest.TestCase):
         self.assertEqual(q1.pop(), {'name': 'myspider1', 'a': 'b'})
         self.assertEqual(q2.pop(), {'name': 'myspider3', 'e': 'f'})
         self.assertEqual(q2.pop(), {'name': 'myspider2', 'c': 'd'})
-

@@ -1,31 +1,29 @@
 # -*- coding: utf-8 -*-
 import os
+from io import BytesIO
 from pkgutil import get_data
 
 import pytest
-
-try:
-    from cStringIO import StringIO as BytesIO
-except ImportError:
-    from io import BytesIO
-
 import six
-
 from twisted.trial import unittest
+
 if six.PY2:
     import mock
 else:
     from unittest import mock
+
 from subprocess import Popen
 
 from scrapy.utils.test import get_pythonpath
-from scrapyd.interfaces import IEggStorage
-from scrapyd.utils import get_crawl_args, get_spider_list, UtilsCache
+
 from scrapyd import get_application
+from scrapyd.interfaces import IEggStorage
+from scrapyd.utils import UtilsCache, get_crawl_args, get_spider_list
+
 
 def get_pythonpath_scrapyd():
     scrapyd_path = __import__('scrapyd').__path__[0]
-    return os.path.dirname(scrapyd_path) + os.pathsep + get_pythonpath() + os.pathsep + os.environ.get('PYTHONPATH', '')
+    return os.path.join(os.path.dirname(scrapyd_path), get_pythonpath(), os.environ.get('PYTHONPATH', ''))
 
 
 class UtilsTest(unittest.TestCase):
@@ -43,6 +41,7 @@ class UtilsTest(unittest.TestCase):
         cargs = get_crawl_args(msg)
         self.assertEqual(cargs, ['lala', '-a', 'arg1=val1', '-s', 'ONE=two'])
         assert all(isinstance(x, str) for x in cargs), cargs
+
 
 class GetSpiderListTest(unittest.TestCase):
     def setUp(self):
